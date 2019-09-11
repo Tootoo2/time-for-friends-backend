@@ -1,6 +1,7 @@
 .directory
 *~
 
+.gitignore
 
 # npm
 node_modules
