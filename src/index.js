@@ -5,6 +5,7 @@ const mongoose = require('mongoose');
 const persons = require('./Person');
 const data = require('./data');
 
+app.use(express.json())
 app.use(cors());
 
 mongoose.connect(`mongodb://localhost/timefriends`, {
@@ -28,6 +29,20 @@ app.get('/', (req, res) => {
 app.get('/api/people', (req, res) => {
 	persons
 		.find()
+		.then(item => res.json(item))
+		.catch(err => console.error(err));
+});
+
+app.post('/api/people/addcontact', (req, res) => {
+	persons
+		.create(req.body)
+		.then(item => res.json(item))
+		.catch(err => console.error(err));
+});
+
+app.delete('/api/people/:id', (req, res) => {
+	persons
+		.deleteOne({ _id: req.params.id })
 		.then(item => res.json(item))
 		.catch(err => console.error(err));
 });

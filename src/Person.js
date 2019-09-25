@@ -7,11 +7,11 @@ let personSchema = new Schema({
 		lastName: String,
 	},
 	phoneNumber: String,
-	mail: String,
+	email: String,
 	location: {
 		country: String,
 		city: String,
-		timezone: String,
+		timeZone: String,
 	},
 });
 
