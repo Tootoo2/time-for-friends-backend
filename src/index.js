@@ -1,17 +1,36 @@
 const express = require('express');
-const app = express();
 const cors = require('cors');
 const mongoose = require('mongoose');
-const persons = require('./Person');
-const data = require('./data');
+const bodyParser = require('body-parser');
+const passport = require('passport');
 
-app.use(express.json())
+const persons = require('./models/Person');
+const data = require('./data');
+const users = require('./routes/api/users');
+
+const app = express();
+
+app.use(
+	bodyParser.urlencoded({
+		extended: false,
+	}),
+);
+
+app.use(express.json());
 app.use(cors());
 
-mongoose.connect(`mongodb://localhost/timefriends`, {
+const dbAddress = require('./config/keys').mongoURI;
+
+mongoose.connect(dbAddress, {
 	useNewUrlParser: true,
 	useUnifiedTopology: true,
 });
+
+app.use(passport.initialize());
+
+require('./config/passport')(passport);
+
+app.use('/api/users', users);
 
 const db = mongoose.connection;
 
