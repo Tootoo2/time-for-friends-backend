@@ -33,7 +33,7 @@ router.post('/register', (req, res) => {
 			const newUser = new User({
 				name: req.body.name,
 				email: req.body.email,
-				password: req.body.password,
+        password: req.body.password,
 				contacts: userContacts,
 			});
 
@@ -44,7 +44,7 @@ router.post('/register', (req, res) => {
 					newUser
 						.save()
 						.then(user => res.json(user))
-						.catch(err => console.error(err));
+            .catch(err => console.error(err));
 				});
 			});
 		}
