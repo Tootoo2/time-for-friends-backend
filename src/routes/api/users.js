@@ -7,9 +7,8 @@ const validateRegisterInput = require('../../validation/register');
 const validateLoginInput = require('../../validation/login');
 
 const User = require('../../models/User');
-const keys = require('../../config/keys')
-const person = require('../../models/Person')
-const data = require('../../data.json')
+const keys = require('../../config/keys');
+const data = require('../../data.json');
 
 router.post('/register', (req, res) => {
 	const { errors, isValid } = validateRegisterInput(req.body);
@@ -22,11 +21,20 @@ router.post('/register', (req, res) => {
 		if (user) {
 			return res.status(400).json({ email: 'Email already exists' });
 		} else {
+			const userData = [...data];
+			const userContacts = [];
+			for (let i = 0; i < 20; i++) {
+				let randomContact = Math.floor(Math.random() * userData.length);
+
+				userContacts.push(userData[randomContact]);
+				userData.splice(randomContact, 1);
+			}
+
 			const newUser = new User({
 				name: req.body.name,
 				email: req.body.email,
-        password: req.body.password,
-        contacts: person.create(data)
+				password: req.body.password,
+				contacts: userContacts,
 			});
 
 			bcrypt.genSalt(10, (err, salt) => {
@@ -63,12 +71,12 @@ router.post('/login', (req, res) => {
 				const payload = {
 					id: user.id,
 					name: user.name,
+					contacts: user.contacts,
 				};
 
 				jwt.sign(
 					payload,
-      		keys.secretOrKey
-            ,
+					keys.secretOrKey,
 					{
 						expiresIn: 31556926,
 					},
@@ -86,6 +94,34 @@ router.post('/login', (req, res) => {
 			}
 		});
 	});
+});
+
+router.post('/add', async (req, res) => {
+	let user = await User.findById(req.body.id);
+	user.contacts.push(req.body.newContact);
+	await user.save();
+	res.json({ ok: true });
+});
+
+router.get('/getContacts/:id', (req, res) => {
+	User.findById(req.params.id)
+		.then(user => {
+			if (user) {
+				return res.json(user);
+			} else {
+				return res.status(404).json({ error: 'user not defined' });
+			}
+		})
+		.catch(err => res.status(404).json(err));
+});
+
+router.delete(`/delete/:id}`, (req, res) => {
+  User.findById(req.params.id).then(user => {
+    if(user){
+      const updatedContacts = user.contacts.filter(user=> user.contacts.name.firstName!==req.body.name.firstName)
+      return res.json(updatedContacts)
+    }
+  })
 });
 
 module.exports = router;
