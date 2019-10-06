@@ -4,8 +4,6 @@ const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const passport = require('passport');
 
-const persons = require('./models/Person');
-const data = require('./data');
 const users = require('./routes/api/users');
 
 const app = express();
@@ -41,38 +39,7 @@ db.once('open', () => {
 	startWebServer();
 });
 
-// app.get('/', (req, res) => {
-// 	res.send('Hello World');
-// });
-
-// app.get('/api/people', (req, res) => {
-// 	persons
-// 		.find()
-// 		.then(item => res.json(item))
-// 		.catch(err => console.error(err));
-// });
-
-// app.post('/api/people/addcontact', (req, res) => {
-// 	persons
-// 		.create(req.body)
-// 		.then(item => res.json(item))
-// 		.catch(err => console.error(err));
-// });
-
-// app.delete('/api/people/:id', (req, res) => {
-// 	persons
-// 		.deleteOne({ _id: req.params.id })
-// 		.then(item => res.json(item))
-// 		.catch(err => console.error(err));
-// });
-
-const createData = () => {
-	db.dropDatabase();
-	persons.create(data);
-};
-
 const startWebServer = () => {
-	createData();
 	app.listen(3001, () => {
 		console.log('App listening on port 3001');
 	});

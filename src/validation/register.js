@@ -13,9 +13,17 @@ module.exports = function validateRegisterInput(data) {
     errors.name = 'Name is required'
   }
 
+  if(!Validator.isAlphanumeric(data.name, 'sv-SE')){
+    errors.name = 'Name is required'
+  }
+
 	if (Validator.isEmpty(data.email)) {
 		errors.email = 'Email is required';
   } 
+
+  if (!Validator.isEmail(data.email)){
+    errors.email = 'Invalid email'
+  }
   
 	if (Validator.isEmpty(data.password)) {
 		errors.password = 'Password is required';

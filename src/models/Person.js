@@ -5,12 +5,10 @@ let personSchema = new Schema({
 	name: {
 		firstName: {
 			type: String,
-		//	match: /^[A-ZÅÄÖa-zåäö][A-ZÅÄÖa-zåäö.\s-]{1,25}$/,
 			required: true,
 		},
 		lastName: {
 			type: String,
-		//	match: /^[A-ZÅÄÖa-zåäö][A-ZÅÄÖa-zåäö.\s-]{1,25}$/,
 			required: true,
 		},
 	},

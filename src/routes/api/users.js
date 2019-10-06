@@ -115,13 +115,4 @@ router.get('/getContacts/:id', (req, res) => {
 		.catch(err => res.status(404).json(err));
 });
 
-router.delete(`/delete/:id}`, (req, res) => {
-  User.findById(req.params.id).then(user => {
-    if(user){
-      const updatedContacts = user.contacts.filter(user=> user.contacts.name.firstName!==req.body.name.firstName)
-      return res.json(updatedContacts)
-    }
-  })
-});
-
 module.exports = router;
